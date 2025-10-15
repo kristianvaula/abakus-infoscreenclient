@@ -1,0 +1,149 @@
+.app-root {
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  background: #0d0d0d;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255,255,255,0.04); /* Maybe remove this */
+  z-index: 100;
+  flex: 0 0 var(--topbar-height);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-logo {
+  height: 64px;
+  width: auto;
+  display: block;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+  height: calc(100vh - var(--topbar-height));
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #0d0d0d;
+}
+
+/* Left column (1/3 width) */
+.col-left {
+  width: var(--left-width);
+  min-width: 220px;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 12px;
+  overflow: auto;
+}
+
+/* Right column (2/3 width) */
+.col-right {
+  width: var(--right-width);
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.eventItem {
+  min-height: 50px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-left: 4px solid transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  border-top-right-radius: var(--border-radius-lg);
+  border-bottom-right-radius: var(--border-radius-lg);
+  color: var(--lego-font-color);
+  transition: background-color var(--easing-fast);
+
+  &:hover {
+    background-color: var(--additive-background);
+  }
+}
+/* video area */
+.video-area {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Make the video/player fill available space */
+.video-player-outer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: 0;
+}
+
+/* other content */
+.info {
+  margin-top: 8px;
+  color: #d1d5db;
+}
+
+@media (orientation: portrait), (max-width: 800px) {
+  .app-container {
+    flex-direction: column;
+    height: calc(100vh - var(--topbar-height));
+  }
+
+  .col-left,
+  .col-right {
+    width: 100%;
+    height: calc((100vh - var(--topbar-height)) / 2);
+    min-width: 0;
+  }
+
+  /* right column above left column */
+  .col-right {
+    order: 1;
+  }
+  .col-left {
+    order: 2;
+  }
+
+  .col-left,
+  .col-right {
+    padding: 8px;
+  }
+
+  .topbar {
+    padding: 0 10px;
+  }
+
+  .topbar-logo {
+    height: 64px;
+  }
+}
