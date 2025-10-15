@@ -131,6 +131,12 @@ export default function VideoPlayer({
         preload="auto"
         // controls intentionally omitted for kiosk mode
       />
+      <div className="pt-[15px] px-[15px] pb-[10px]">
+        <h2 className="video-title">
+          Dette er en eksempel tittel
+        </h2>
+      </div>
+
     </div>
   );
 }
