@@ -1,0 +1,168 @@
+/* src/components/bus-footer.css */
+
+/* Basic footer */
+.bus-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px 12px;
+  z-index: 50;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.4);
+  gap: 12px;
+  /* make sure it sits above other content */
+  pointer-events: auto;
+}
+
+/* inner layout */
+.bus-footer-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* brand on the left */
+.bus-brand {
+  flex: 0 0 auto;
+  margin-right: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent-color, #ffd54f);
+  white-space: nowrap;
+}
+
+/* Ticker viewport (clipping container) */
+.bus-ticker {
+  flex: 1 1 auto;
+  overflow: hidden;
+  position: relative;
+  min-width: 0; /* important for flex children to shrink properly */
+}
+
+/* Scroller contains two identical tracks side-by-side */
+.ticker-scroller {
+  display: flex;
+  width: max-content; /* content-determined width */
+  align-items: center;
+  gap: 0;
+  /* animation duration can be adjusted with the CSS variable */
+  animation: ticker-scroll linear infinite 100s;
+  will-change: transform;
+}
+
+/* Each track holds the inline items and should be identical to its duplicate */
+.ticker-track {
+  display: inline-flex;
+  gap: 28px;
+  white-space: nowrap;
+  align-items: center;
+}
+
+/* item styling */
+.ticker-item {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding-right: 8px;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+/* small visual tokens */
+.ticker-item .stop {
+  font-weight: 600;
+  min-width: 120px;
+  text-transform: none;
+}
+.ticker-item .line {
+  background: rgba(255,255,255,0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  min-width: 36px;
+  text-align: center;
+}
+.ticker-item .time {
+  font-variant-numeric: tabular-nums;
+  min-width: 56px;
+}
+.ticker-item .route {
+  opacity: 0.95;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticker-group {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  padding-right: 28px; /* space between groups */
+}
+
+.departures {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.departure {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding-right: 6px;
+  white-space: nowrap;
+}
+
+.ticker-item .line,
+.departure .line {
+  background: linear-gradient(135deg, rgba(226, 22, 23, 0.8), rgba(226, 22, 23, 0.8)); /* bright yellow-gold */
+  color: white; /* dark text for contrast */
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 2px 3px;
+  border-radius: 3px;
+  text-align: center;
+  min-width: 32px;
+  display: inline-block;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+/* shrink the stop label slightly if needed */
+.ticker-group .stop {
+  font-weight: 700;
+  min-width: 130px;
+}
+
+/* pause animation on hover to allow reading */
+.bus-ticker:hover .ticker-scroller,
+.bus-ticker:focus-within .ticker-scroller {
+  animation-play-state: paused;
+}
+
+/* prefer reduced motion -> disable animation */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-scroller {
+    animation: none;
+  }
+}
+
+/* animation: move left by 50% of the scroller's width (i.e. one track) */
+/* We use translateX(0) => translateX(-50%) because scroller contains two identical tracks */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0%); }
+  50% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+/* Small states */
+.muted { opacity: 0.7; }
+.error { color: #ff6b6b; font-weight: 600; }
