@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 type VideoPlayerProps = {
   playlist?: string[];        // array of video URLs (relative to site root or absolute)
+  titles?: string[],          // titles to display with the promo videoes
   muted?: boolean;            // start muted (recommended for autoplay)
   loopPlaylist?: boolean;     // whether to loop the playlist when it ends
   className?: string;         // optional extra class

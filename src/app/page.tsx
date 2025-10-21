@@ -1,4 +1,4 @@
-import VideoPlayer from "@/components/videoplayer/VideoPlayer";
+import VideoArea from "@/components/videoplayer/VideoArea";
 import BusFooter from "@/components/bus-footer/BusFooter";
 import "../styles/app.css"
 import Events from "@/components/events/Events";
@@ -13,9 +13,7 @@ export default function Home() {
         </header>
       <div className="app-container">
         <aside className="col-left">
-          <div className="video-area">
-            <VideoPlayer />
-          </div>
+          <VideoArea />
         </aside>
         <main className="col-right">
           <div className="info">
