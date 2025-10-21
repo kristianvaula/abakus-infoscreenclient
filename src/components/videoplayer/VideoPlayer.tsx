@@ -2,17 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 
 type VideoPlayerProps = {
-  playlist?: string[];         // array of video URLs (relative to site root or absolute)
+  playlist?: string[];        // array of video URLs (relative to site root or absolute)
   muted?: boolean;            // start muted (recommended for autoplay)
   loopPlaylist?: boolean;     // whether to loop the playlist when it ends
   className?: string;         // optional extra class
 };
-
-/**
- * VideoPlayer: autoplaying, looped, no-controls player for info screens.
- *
- * By default it plays "/example_video.mp4" — put your test file in the project's public folder.
- */
 export default function VideoPlayer({
   playlist = ["/example_video.mp4"],
   muted = true,
@@ -21,49 +15,41 @@ export default function VideoPlayer({
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [index, setIndex] = useState(0);
-  const retryRef = useRef(0); // simple retry counter for play failures
+  const retryRef = useRef(0);
   const MAX_RETRIES = 3;
 
-  // set source & attempt to play when the index or playlist changes
   useEffect(() => {
     const v = videoRef.current;
     if (!v || playlist.length === 0) return;
 
-    // assign attributes / ensure muted state
     v.muted = muted;
     v.playsInline = true;
     v.autoplay = true;
     v.controls = false;
-    v.loop = false; // we handle looping in the logic (so we can loop playlists)
-    // set src and load
+    v.loop = false;
     v.src = playlist[index];
     v.load();
 
-    // try playing (autoplay may be rejected)
     const tryPlay = async () => {
       try {
         await v.play();
         retryRef.current = 0;
       } catch (err) {
-        // autoplay rejected — try to recover: ensure muted then retry a couple times
-        retryRef.current += 1;
+       retryRef.current += 1;
         if (retryRef.current <= MAX_RETRIES) {
           try {
             v.muted = true;
             await v.play();
             retryRef.current = 0;
           } catch {
-            // schedule another short retry
             setTimeout(tryPlay, 800 * retryRef.current);
           }
         } else {
-          // give up silently — the device might require user gesture.
           console.warn("Video playback failed after retries:", err);
         }
       }
     };
 
-    // if the video is already ready, attempt play immediately; otherwise wait for canplay
     if (v.readyState >= 3) {
       tryPlay();
     } else {
@@ -73,7 +59,6 @@ export default function VideoPlayer({
     }
   }, [index, playlist, muted]);
 
-  // handle 'ended' events -> advance playlist or restart
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
