@@ -16,9 +16,7 @@ export default function Home() {
           <VideoArea />
         </aside>
         <main className="col-right">
-          <div className="info">
-            <Events />
-          </div>
+          <Events />
         </main>
       </div>
       <footer>

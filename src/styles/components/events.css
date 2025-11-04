@@ -1,0 +1,131 @@
+.event_wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.event_columns {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* events.css - basic styling for the event card */
+.event-card {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  background: #222222; /* dark background */
+  color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 115px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* left image column */
+.event-image {
+  flex: 0 0 200px;
+  height: 100%;
+  background: #1f1f1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* placeholder if no image */
+.event-noimage {
+  width: 100%;
+  height: 100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#9ca3af;
+  font-size: 0.9rem;
+}
+
+/* right content */
+.event-body {
+  flex: 1 1 auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* top section: title and metadata */
+.event-top {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-title {
+  margin: 0;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #ffffff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* meta row */
+.event-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.event-sep {
+  color: #6b7280;
+}
+
+/* bottom section: capacity and progress */
+.event-bottom {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-capacity-label {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* progress bar container */
+.event-progressbar {
+  width: 100%;
+  height: 6px;
+  background: #2b2b2f;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+/* progress fill (blue) */
+.event-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  transition: width 300ms ease;
+  width: 0;
+}
+
+/* small responsive tweak */
+@media (max-width: 480px) {
+  .event-image { flex: 0 0 120px; }
+  .event-title { font-size: 1rem; }
+}
