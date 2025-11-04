@@ -28,12 +28,17 @@ export default function VideoArea() {
   }, []);
 
   return (
-    <div className="video-area">
-      <VideoPlayer
-        playlist={items}
-        muted={false}
-        loopPlaylist={false}
-      />
+    <>
+    {(items.length > 0)  ? (
+      <div className="video-area">
+        <VideoPlayer
+          playlist={items}
+          muted={false}
+          loopPlaylist={false}
+        />
     </div>
+    ) : <></>
+    }
+    </>
   );
 }
