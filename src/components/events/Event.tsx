@@ -36,12 +36,14 @@ export default function Event({ event }: Props) {
         </div>
 
         <div className="event-bottom">
+          {/* TODO Probably need authentication for this part here. 
           <div className="event-capacity-label">
             {event.capacity ? `${event.capacity} påmeldte` : "Ingen data"}
           </div>
           <div className="event-progressbar">
             <div className="event-progress" style={{ width: `${progress}%` }} />
           </div>
+          */}
         </div>
       </div>
     </div>
