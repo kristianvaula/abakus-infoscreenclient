@@ -53,6 +53,7 @@
   justify-content: flex-start;
   gap: 12px;
   overflow: auto;
+  margin-bottom: 40px;
 }
 
 /* Right column (2/3 width) */
@@ -100,10 +101,21 @@
   word-break: normal;
 }
 
-/* other content */
-.info {
-  margin-top: 8px;
-  color: #d1d5db;
+.info-box {
+  display: block;
+  padding: 10px;
+  width: 100%;
+  border: 0;
+  border-radius: var(--border-radius-md);
+  background-color: #222222;
+}
+
+.info-box > h1 {
+  font-size:x-large;
+  margin-bottom: 12px;
+}
+.info-box > p {
+  font-size: large;
 }
 
 @media (orientation: portrait), (max-width: 800px) {

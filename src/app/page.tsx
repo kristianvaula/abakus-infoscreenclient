@@ -2,6 +2,7 @@ import VideoArea from "@/components/videoplayer/VideoArea";
 import BusFooter from "@/components/bus-footer/BusFooter";
 import "../styles/app.css"
 import Events from "@/components/events/Events";
+import InfoBox from "@/components/InfoBox";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <div className="app-container">
         <aside className="col-left">
           <VideoArea />
+          <InfoBox />
         </aside>
         <main className="col-right">
           <Events />
