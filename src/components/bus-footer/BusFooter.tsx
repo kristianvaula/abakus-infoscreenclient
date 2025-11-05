@@ -87,7 +87,7 @@ function BusFooterInner() {
         {!loading && !error && hasAnyDeparture && (
           <div
             className="ticker-scroller"
-            style={{ ["--ticker-duration" as any]: "60s" }}
+            style={{ ["--ticker-duration" as any]: "100s" }}
           >
             {renderTrack(groups)}
             {renderTrack(groups)}
