@@ -37,7 +37,15 @@ export default function VideoArea() {
           loopPlaylist={false}
         />
     </div>
-    ) : <></>
+    ) : (
+    <div className="flex justify-center items-center w-full">
+      <img
+        src="abakus-banner.png"
+        alt="Centered"
+        className="max-w-full h-auto object-contain"
+      />
+    </div>
+    )
     }
     </>
   );
