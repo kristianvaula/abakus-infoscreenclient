@@ -21,14 +21,14 @@
   color: #fff;
   border-radius: 16px;
   overflow: hidden;
-  min-height: 100px;
+  min-height: 13%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
 /* left image column */
 .event-image {
-  flex: 0 0 200px;
+  flex: 0 0 30%;
   height: 100%;
   background: #1f1f1f;
   display: flex;
@@ -72,7 +72,7 @@
 
 .event-title {
   margin: 0;
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-size: clamp(0.9rem, 1.5vw + 0.3rem, 1.8rem);
   font-weight: 600;
   line-height: 1.1;
   color: #ffffff;
@@ -80,13 +80,12 @@
   text-overflow: ellipsis;
 }
 
-/* meta row */
 .event-meta {
   display: flex;
   align-items: center;
   gap: 8px;
   color: #cbd5e1;
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 0.8vw + 0.2rem, 1.2rem);
   opacity: 0.9;
 }
 
