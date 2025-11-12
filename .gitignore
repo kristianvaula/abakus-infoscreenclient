@@ -4,7 +4,7 @@ temp
 credentials.json
 manifest.json
 token.json
-videos/
+public/videos/
 # dependencies
 /node_modules
 /.pnp

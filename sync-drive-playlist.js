@@ -12,7 +12,10 @@ const DRIVE_FOLDER_ID = process.env.DRIVE_FOLDER_ID;
 const CREDENTIALS_PATH = path.join(__dirname, "credentials.json");
 const TOKEN_PATH = path.join(__dirname, "token.json");
 const MANIFEST_PATH = path.join(__dirname, "manifest.json");
-const DOWNLOAD_DIR = path.join(__dirname, "videos");
+
+const DEFAULT_DOWNLOAD_DIR = path.join(__dirname, "public", "videos");
+const DOWNLOAD_DIR = process.env.DOWNLOAD_DIR ? path.resolve(process.env.DOWNLOAD_DIR) : DEFAULT_DOWNLOAD_DIR;
+
 const MAX_BYTES = 1_000_000_000; // 1 GB
 
 if (!DRIVE_FOLDER_ID) {
@@ -36,9 +39,31 @@ function saveJSON(p, obj) {
 }
 
 async function authorize() {
-  if (!fs.existsSync(CREDENTIALS_PATH)) {
-    throw new Error("credentials.json not found. Create OAuth credentials and save as credentials.json");
+  // 1) Prefer Service Account from environment (production / Vercel)
+  if (process.env.GCP_SA_KEY) {
+    try {
+      const saJson = JSON.parse(process.env.GCP_SA_KEY);
+      // Use GoogleAuth with explicit credentials (works in serverless too)
+      const auth = new google.auth.GoogleAuth({
+        credentials: saJson,
+        scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+      });
+      const client = await auth.getClient();
+      // return an auth client compatible with google.drive({ auth: client })
+      return client;
+    } catch (e) {
+      console.error("Failed to initialize service account from GCP_SA_KEY:", e);
+      throw e;
+    }
   }
+
+  // 2) Fallback: local OAuth credentials/token files (development)
+  if (!fs.existsSync(CREDENTIALS_PATH)) {
+    throw new Error(
+      "credentials.json not found. Create OAuth credentials and save as credentials.json, or set GCP_SA_KEY environment variable."
+    );
+  }
+
   const creds = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, "utf8"));
   const clientInfo = creds.installed || creds.web;
   if (!clientInfo) throw new Error("Invalid credentials.json structure.");
@@ -53,7 +78,7 @@ async function authorize() {
     return oAuth2Client;
   }
 
-  // get new token
+  // interactive: obtain new token (dev only)
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: "offline",
     scope: ["https://www.googleapis.com/auth/drive.readonly"],
@@ -99,11 +124,14 @@ async function downloadFileToPath(drive, fileId, destPath) {
   });
 }
 
+function sanitizeFilename(name) {
+  return name.replace(/[^\w.-]/g, "_");
+}
+
 async function main() {
   const auth = await authorize();
   const drive = google.drive({ version: "v3", auth });
 
-  // 1) Find playlist.json in the folder
   console.log("Listing files in Drive folder...");
   const files = await findFilesInFolder(drive, DRIVE_FOLDER_ID);
   const playlistFile = files.find(f => f.name === "playlist.json");
@@ -125,19 +153,14 @@ async function main() {
     throw new Error("Failed to parse playlist.json from Drive: " + e.message);
   }
 
-  // Assume every item in playlist.items is to be used; playlist items look like:
-  // { "file": "abakus_promo.mp4", "title": "Velkommen til Abakus!" }
   const playlistFiles = (playlist.items || []).map(it => it.file);
   console.log("Files listed in playlist.json:", playlistFiles);
 
-  // 2) Build map of Drive files in the folder keyed by name
   const driveByName = new Map(files.map(f => [f.name, f]));
 
-  // 3) Load manifest to detect changes
-  const manifest = loadJSON(MANIFEST_PATH, { items: {} }); // items keyed by localName
+  const manifest = loadJSON(MANIFEST_PATH, { items: {} });
   manifest.items = manifest.items || {};
 
-  // 4) Determine which files we need locally: those listed in playlist and present in Drive
   const toKeepDriveIds = new Set();
   const downloadTasks = [];
 
@@ -149,21 +172,19 @@ async function main() {
     }
     toKeepDriveIds.add(f.id);
 
-    // check size limit
     const sizeNum = f.size ? Number(f.size) : 0;
     if (sizeNum > MAX_BYTES) {
       console.error(`File "${fileName}" exceeds max size (${sizeNum} bytes). Skipping download.`);
       continue;
     }
 
-    // decide whether to download: if not in manifest or md5 changed or modifiedTime changed
+    // decide whether to download: check by drive id or md5/modifiedTime
     const existing = Object.values(manifest.items).find(it => it.driveId === f.id || it.name === f.name);
     const md5 = f.md5Checksum || null;
     let needDownload = false;
     if (!existing) needDownload = true;
     else if (md5 && existing.md5 && md5 !== existing.md5) needDownload = true;
     else if (!md5) {
-      // fallback to modifiedTime comparison
       const exUpdated = existing.modifiedTime || existing.updatedAt || null;
       if (!exUpdated || exUpdated !== f.modifiedTime) needDownload = true;
     }
@@ -175,23 +196,25 @@ async function main() {
     }
   }
 
-  // 5) Download needed files
+  // 5) Download needed files into DOWNLOAD_DIR (which is public/videos by default)
   for (const task of downloadTasks) {
     const f = task.driveFile;
-    const safeName = f.name.replace(/\s+/g, "_");
+    const safeName = sanitizeFilename(f.name);
+    // keep the id prefix to avoid collisions and ensure uniqueness
     const localName = `${f.id}_${safeName}`;
     const localPath = path.join(DOWNLOAD_DIR, localName);
     try {
       console.log(`Downloading ${f.name} -> ${localName} ...`);
       await downloadFileToPath(drive, f.id, localPath);
-      // after download, verify size
       const stats = fs.statSync(localPath);
       if (stats.size > MAX_BYTES) {
         fs.unlinkSync(localPath);
         console.error(`Downloaded file ${f.name} exceeded max size after download. Deleted local copy.`);
         continue;
       }
-      // update manifest
+      // ensure readable
+      try { fs.chmodSync(localPath, 0o644); } catch (e) { /* ignore on read-only */ }
+
       manifest.items[localName] = {
         driveId: f.id,
         name: f.name,
@@ -214,9 +237,12 @@ async function main() {
     if (toKeepDriveIds.has(it.driveId)) keepLocalNames.add(it.localName);
   });
 
+  // ensure we only operate inside DOWNLOAD_DIR and only delete files (not folders)
   const localFiles = fs.readdirSync(DOWNLOAD_DIR);
   for (const lf of localFiles) {
     const p = path.join(DOWNLOAD_DIR, lf);
+    const stat = fs.statSync(p);
+    if (!stat.isFile()) continue;
     if (!keepLocalNames.has(lf)) {
       console.log("Deleting local file not in playlist:", lf);
       try {

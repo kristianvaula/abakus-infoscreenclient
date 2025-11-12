@@ -4,7 +4,7 @@ import path from "path";
 
 export const runtime = "nodejs"; // must run in Node (we read the filesystem)
 
-const VIDEO_DIR = path.join(process.cwd(), "videos");
+const VIDEO_DIR = path.join(process.cwd(), "public", "videos");
 const MANIFEST_PATH = path.join(process.cwd(), "manifest.json");
 
 export async function GET(req: Request) {

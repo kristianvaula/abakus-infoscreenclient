@@ -29,7 +29,7 @@ export default function VideoArea() {
 
   return (
     <>
-    {(items.length <= 0)  ? (
+    {(items.length > 0)  ? (
       <div className="video-area">
         <VideoPlayer
           playlist={items}
