@@ -33,8 +33,8 @@ export default function VideoArea() {
       <div className="video-area">
         <VideoPlayer
           playlist={items}
-          muted={false}
-          loopPlaylist={false}
+          muted={true}
+          loopPlaylist={true}
         />
     </div>
     ) : (
