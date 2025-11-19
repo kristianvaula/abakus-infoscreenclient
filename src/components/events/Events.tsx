@@ -47,7 +47,6 @@ export default function Events() {
           setSEvents(social);
           setOEvents(other);
         }
-        console.log("Events fetched:", { total: json.length, social: social.length, other: other.length });
       } catch (e) {
         console.error("Failed to load events — keeping current list:", e);
       }
