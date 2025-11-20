@@ -129,18 +129,19 @@ export default function VideoPlayer({
   const title = currentItem?.title || "";
 
   return (
-    <div className={`video-player-outer ${className}`} style={{ width: "100%", height: "100%" }}>
-      <video
-        ref={videoRef}
-        className="video-player"
-        playsInline
-        muted={muted}
-        autoPlay
-        preload="auto"
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-      />
-      <div className="pt-[15px] px-[15px] pb-[10px]">
-        <h2 className="video-title">{title}</h2>
+    <div className="video-area">
+      <div className={`video-player-outer ${className}`} style={{ width: "100%", height: "100%" }}>
+        <video
+          ref={videoRef}
+          className="video-player"
+          playsInline
+          muted={muted}
+          autoPlay
+          preload="auto"
+        />
+        <div className="video-caption">
+        {/*  <h2 className="video-title">{title}</h2> */}
+        </div>
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ export default function VideoArea() {
           muted={true}
           loopPlaylist={true}
         />
-    </div>
+      </div>
     ) : (
     <div className="flex justify-center items-center w-full">
       <img
