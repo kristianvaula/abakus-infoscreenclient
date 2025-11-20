@@ -5,6 +5,8 @@ export enum EventType {
   Social = "social",
   Other = "other",
   BreakfastTalk = "breakfast_talk",
+  party = "party",
+  alternative_presentation = "alternative_presentation",
 }
 
 export const EVENT_TYPE_LABELS: Record<string, string> = {
@@ -12,8 +14,10 @@ export const EVENT_TYPE_LABELS: Record<string, string> = {
   company_presentation: "Bedriftspresentasjon",
   gala: "Galla",
   social: "Sosialt",
-  other: "Other",
-  breakfast_talk: "Frokostforedrag"
+  other: "Annet",
+  breakfast_talk: "Frokostforedrag",
+  party: "Fest",
+  alternative_presentation: "Alternativ bedpres",
 };
 
 export function getEventTypeLabel(type?: string): string {
