@@ -56,38 +56,67 @@
 
 /* right content */
 .event-body {
-  flex: 1 1 auto;
-  padding: 12px 14px;
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
   justify-content: space-between;
 }
 
 /* top section: title and metadata */
 .event-top {
+  padding-left: 12px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
 .event-title {
+  max-width: 100%;
   margin: 0;
-  font-size: clamp(0.9rem, 1.4vw + 0.3rem, 1.6rem);
   font-weight: 600;
   line-height: 1.1;
-  color: #ffffff;
-  white-space: nowrap;
+  color: #fff;
+  overflow:hidden;
   text-overflow: ellipsis;
+  box-sizing: border-box;
+  padding-top: 10px;
+  padding-right: 6px;
+  padding-bottom: 2px;
 }
 
 .event-meta {
+  padding-left: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
   color: #cbd5e1;
-  font-size: clamp(0.75rem, 0.8vw + 0.2rem, 1.2rem);
   opacity: 0.9;
+  padding-bottom: 10px;
 }
+
+@media (min-width: 1000px) {
+  .event-title{ font-size: 1.0rem;}
+  .event-meta {font-size: 1.0rem;}
+}
+
+@media (min-width: 1800px) {
+  .event-title{ font-size: 1.40rem;}
+  .event-meta {font-size: 1.1rem;}
+}
+
+@media (min-width: 2500px) {
+  .event-title{ font-size: 1.8rem;}
+  .event-meta {font-size: 1.5rem;}
+}
+
+@media (min-width: 3200px) {
+  .event-title{ font-size: 2.2rem;}
+  .event-meta {font-size: 1.8rem;}
+}
+
 
 .event-sep {
   color: #6b7280;
@@ -95,10 +124,9 @@
 
 /* bottom section: capacity and progress */
 .event-bottom {
-  margin-top: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  background-color: red;
+  height: 2px;
+  width: 100%;
 }
 
 .event-capacity-label {
