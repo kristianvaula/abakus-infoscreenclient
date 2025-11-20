@@ -3,7 +3,7 @@
 import React from "react";
 import { EventItem } from "@/types/types";
 import "@/styles/components/events.css";
-import { getEventTypeLabel } from "@/types/eventTypes";
+import { getEventTypeLabel, getEventColorHex } from "@/types/eventTypes";
 
 interface Props {
   event: EventItem;
@@ -35,7 +35,10 @@ export default function Event({ event }: Props) {
             <span className="event-sep">•</span>
             <span className="event-type">{getEventTypeLabel(event.eventType || "")}</span>
           </div>
-          <div className="event-bottom">
+          <div 
+            className="event-bottom" 
+            style={{ backgroundColor: getEventColorHex(event.eventType || "") }}
+          >
           </div>
         </div>
       </div>

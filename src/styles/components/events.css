@@ -124,8 +124,9 @@
 
 /* bottom section: capacity and progress */
 .event-bottom {
-  background-color: red;
+  min-height: 2px;
   height: 2px;
+  max-height: 2px;
   width: 100%;
 }
 
