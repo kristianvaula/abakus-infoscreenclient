@@ -107,13 +107,8 @@
   border-radius: 30px;
   padding: 3px;                /* small internal padding so video doesn't touch edges */
   box-sizing: border-box;
-  transform: scale(0.96);      /* slightly scaled down for "breathing room" */
+  transform: scale(1.0);      /* slightly scaled down for "breathing room" */
   transition: transform .18s ease;
-}
-
-/* optional: pop the video slightly on hover (if it's interactive) */
-.video-player:hover {
-  transform: scale(1);
 }
 
 /* title area — fixed-height so the video can use the rest */
