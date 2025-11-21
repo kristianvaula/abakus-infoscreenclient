@@ -97,6 +97,20 @@
   padding-bottom: 10px;
 }
 
+
+
+.event-sep {
+  color: #6b7280;
+}
+
+/* bottom section: capacity and progress */
+.event-bottom {
+  min-height: 2px;
+  height: 2px;
+  max-height: 2px;
+  width: 100%;
+}
+
 @media (min-width: 1000px) {
   .event-title{ font-size: 1.0rem;}
   .event-meta {font-size: 1.0rem;}
@@ -113,44 +127,15 @@
 }
 
 @media (min-width: 3200px) {
-  .event-title{ font-size: 2.2rem;}
-  .event-meta {font-size: 1.8rem;}
+  .event-title{ font-size: 2.6rem;}
+  .event-meta {font-size: 2.4rem;}
+  .event_columns {gap: 30px; }
+  .event-bottom { 
+    height: 4px; 
+    max-height: 4px;
+  }
 }
 
-
-.event-sep {
-  color: #6b7280;
-}
-
-/* bottom section: capacity and progress */
-.event-bottom {
-  min-height: 2px;
-  height: 2px;
-  max-height: 2px;
-  width: 100%;
-}
-
-.event-capacity-label {
-  font-size: 0.85rem;
-  color: #9ca3af;
-}
-
-/* progress bar container */
-.event-progressbar {
-  width: 100%;
-  height: 6px;
-  background: #2b2b2f;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-/* progress fill (blue) */
-.event-progress {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  transition: width 300ms ease;
-  width: 0;
-}
 
 /* small responsive tweak */
 @media (max-width: 480px) {

@@ -30,13 +30,11 @@ export default function VideoArea() {
   return (
     <>
     {(items.length > 0)  ? (
-      <div className="video-area">
-        <VideoPlayer
-          playlist={items}
-          muted={true}
-          loopPlaylist={true}
-        />
-      </div>
+      <VideoPlayer
+        playlist={items}
+        muted={true}
+        loopPlaylist={true}
+      />
     ) : (
     <div className="flex justify-center items-center w-full">
       <img

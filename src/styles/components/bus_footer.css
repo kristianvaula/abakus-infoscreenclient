@@ -19,6 +19,8 @@
   pointer-events: auto;
 }
 
+
+
 /* inner layout */
 .bus-footer-inner {
   display: flex;
@@ -135,13 +137,6 @@
   contain: layout paint;
 }
 
-/* safer & hardware-friendly keyframes */
-@keyframes ticker-scroll {
-  0%   { transform: translate3d(0, 0, 0); }
-  50%  { transform: translate3d(-50%, 0, 0); }
-  100% { transform: translate3d(0, 0, 0); }
-}
-
 /* lighten expensive visual effects by default, but have a full style set only for capable devices */
 .ticker-item .line,
 .departure .line {
@@ -179,6 +174,81 @@
   font-weight: 600;
   font-size: 0.95rem;
 }
+
+
+@media (min-width: 3200px) {
+  /* quick direct scaling */
+  .bus-footer {
+    font-size: 28px;              /* 14px * 1.5 */
+    padding: 12px 18px;           /* 8/12 -> 12/18 */
+  }
+
+  .bus-brand {
+    font-size: 1.15em;            /* slightly larger than footer base */
+    margin-right: 18px;           /* 12px * 1.5 */
+  }
+
+  /* spacing between track items/groups */
+  .ticker-track {
+    gap: 42px;                    /* 28px * 1.5 */
+  }
+
+  .ticker-group {
+    padding-right: 42px;          /* 28px * 1.5 */
+    gap: 18px;                    /* 12px * 1.5 */
+  }
+
+  /* per-item sizing */
+  .ticker-item {
+    font-size: 1.7rem;          /* 0.95rem * 1.5 */
+    gap: 12px;                    /* 8px * 1.5 */
+    padding-right: 12px;          /* 8px * 1.5 */
+  }
+
+  .departures {
+    gap: 15px;                    /* 10px * 1.5 */
+  }
+
+  .departure {
+    gap: 9px;                     /* 6px * 1.5 */
+    padding-right: 9px;           /* 6px * 1.5 */
+  }
+
+  /* stop label (there are two selectors in your file, cover both) */
+  .ticker-item .stop,
+  .ticker-group .stop {
+    min-width: 195px;             /* 130px * 1.5 (or 120px * 1.5 if used) */
+  }
+
+  /* line token */
+  .ticker-item .line,
+  .departure .line {
+    font-size: 1.9rem;            /* 1rem * 1.5 */
+    min-width: 54px;              /* 36px * 1.5 */
+    padding: 3px 4px;             /* 2/3px -> ~3/4px */
+    border-radius: 4.5px;         /* 3px * 1.5 (optional, keeps look consistent) */
+    box-shadow: 0 1.5px 3px rgba(0,0,0,0.25); /* optionally scale shadow */
+  }
+
+  .time {
+    min-width: 84px;              /* 56px * 1.5 */
+  }
+
+  .route {
+    max-width: 390px;             /* 260px * 1.5 */
+  }
+
+  /* if you want the scroller to move slower because there's more content: */
+  /* .ticker-scroller { --ticker-duration: 150s; } */
+}
+
+/* safer & hardware-friendly keyframes */
+@keyframes ticker-scroll {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
 
 /* ensure pausing still works */
 .bus-ticker:hover .ticker-scroller,

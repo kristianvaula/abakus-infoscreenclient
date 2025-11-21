@@ -15,7 +15,6 @@
   align-items: center;
   padding: 0 16px;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(255,255,255,0.04); /* Maybe remove this */
   z-index: 100;
   flex: 0 0 var(--topbar-height);
 }
@@ -105,7 +104,7 @@
   object-fit: contain;         /* show whole frame, letterboxed if needed */
   display: block;
   border: 0;
-  border-radius: 20px;
+  border-radius: 30px;
   padding: 3px;                /* small internal padding so video doesn't touch edges */
   box-sizing: border-box;
   transform: scale(0.96);      /* slightly scaled down for "breathing room" */
@@ -142,6 +141,18 @@
   background-color: #222222;
 }
 
+.titlebox {
+  height: 8vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.titlebox > h1 {
+  font-size:x-large;
+  margin: 0;
+}
+
 .info-box > h1 {
   font-size:x-large;
   margin-bottom: 12px;
@@ -149,28 +160,31 @@
 .info-box > p {
   font-size: large;
 }
+
+
 @media (min-width: 1000px) {
-  .info-box > h1{ font-size: 1.0rem;}
+  .info-box > h1, .titlebox > h1{ font-size: 1.0rem;}
   .info-box > p {font-size: 1.0rem;}
   .topbar-logo { height: 64px; }
 }
 
 @media (min-width: 1800px) {
-  .info-box > h1{ font-size: 1.40rem;}
+  .info-box > h1, .titlebox > h1{ font-size: 1.40rem;}
   .info-box > p {font-size: 1.1rem;}
   .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 2500px) {
-  .info-box > h1{ font-size: 1.8rem;}
+  .info-box > h1, .titlebox > h1{ font-size: 1.8rem;}
   .info-box > p {font-size: 1.5rem;}
   .topbar-logo { height: 128px; }
 }
 
 @media (min-width: 3200px) {
-  .info-box > h1{ font-size: 2.2rem;}
-  .info-box > p {font-size: 1.8rem;}
+  .info-box > h1, .titlebox > h1{ font-size: 2.5rem; margin-bottom: 20px; margin-top:10px;}
+  .info-box > p {font-size: 2.0rem;}
   .topbar-logo { height: 200px; }
+  .info-box { padding: 20px;}
 }
 
 @media (orientation: portrait), (max-width: 800px) {

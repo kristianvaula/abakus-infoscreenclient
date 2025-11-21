@@ -63,12 +63,18 @@ export default function Events() {
   return (
     <div className="event_wrapper">
       <div className="event_columns pr-[12px]">
+        <div className="titlebox">
+          <h1 className="">Sosialt</h1>
+        </div>
         {sEvents.map((ev) => (
           // prefer a stable key if available; fallback to index only if necessary
           <Event event={ev} key={(ev as any).id ?? JSON.stringify(ev)} />
         ))}
       </div>
       <div className="event_columns pl-[12px]">
+        <div className="titlebox">
+          <h1 className="">Bedpres og kurs</h1>
+        </div>
         {oEvents.map((ev) => (
           <Event event={ev} key={(ev as any).id ?? JSON.stringify(ev)} />
         ))}
