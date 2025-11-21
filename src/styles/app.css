@@ -100,7 +100,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 6px;               /* breathing room inside the outer box */
+  /* padding: 6px; */              /* breathing room inside the outer box */
   box-sizing: border-box;
 }
 
@@ -175,8 +175,9 @@
 
 .info-content {
   color: white;
-  text-shadow: 0 5px 9px rgba(0,0,0,0.7);
-  max-width: 80%; /* optional, for bedre linjelengde */
+  background-color: rgba(0,0,0,0.1);
+  text-shadow: 0 3px 6px rgba(0,0,0,0.9);
+  max-width: 90%; /* optional, for bedre linjelengde */
 }
 
 .info-content h1 {
@@ -191,26 +192,27 @@
 
 
 @media (min-width: 1000px) {
-  .info-content > h1, .titlebox > h1{ font-size: 1.0rem;}
-  .info-content > p {font-size: 1.0rem;}
+  .info-content > h1, .titlebox > h1{ font-size: 1.8rem;}
+  .info-content > p {font-size: 1.5rem;}
   .topbar-logo { height: 64px; }
 }
 
 @media (min-width: 1800px) {
-  .info-content > h1, .titlebox > h1{ font-size: 1.40rem;}
-  .info-content > p {font-size: 1.1rem;}
+  .info-content > h1, .titlebox > h1{ font-size: 2rem;}
+  .info-content > p {font-size: 1.8rem;}
   .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 2500px) {
-  .info-content > h1, .titlebox > h1{ font-size: 1.8rem;}
-  .info-content > p {font-size: 1.5rem;}
+  .info-content > h1, .titlebox > h1{ font-size: 2.4rem;}
+  .info-content > p {font-size: 2rem;}
   .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 3200px) {
-  .info-content > h1 { font-size: 2.5rem; margin-bottom: 20px; margin-top:10px;}
-  .info-content > p {font-size: 2.0rem;}
+  .info-content { text-shadow: 0 12px 12px rgba(0,0,0,0.9);}
+  .info-content > h1 { font-size: 2.8rem; margin-bottom: 20px; margin-top:10px;}
+  .info-content > p {font-size: 2.3rem;}
   .topbar-logo { height: 100%; width: auto; }
   .info-box { padding: 20px;}
   .col-left { padding: 30px; gap: 30px; }
