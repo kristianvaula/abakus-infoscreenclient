@@ -185,6 +185,7 @@
   .info-box > p {font-size: 2.0rem;}
   .topbar-logo { height: 200px; }
   .info-box { padding: 20px;}
+  .col-left { padding: 30px; gap: 30px; }
 }
 
 @media (orientation: portrait), (max-width: 800px) {
