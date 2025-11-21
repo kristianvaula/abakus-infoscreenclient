@@ -11,7 +11,15 @@ export default function Home() {
         <div className="topbar-left">
           <img src="/abakus_logo.svg" alt="" className="topbar-logo"/>
         </div>
-        </header>
+        <div className="topbar-right">
+          <div className="titlebox">
+            <h1 className="">Sosialt</h1>
+          </div>
+          <div className="titlebox">
+            <h1 className="">Bedpres og kurs</h1>
+          </div>
+        </div>
+      </header>
       <div className="app-container">
         <aside className="col-left">
           <VideoArea />
