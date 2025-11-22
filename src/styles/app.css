@@ -68,8 +68,6 @@
 /* Right column (2/3 width) */
 .col-right {
   width: var(--right-width);
-  padding: 12px;
-  padding-top: 0px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
