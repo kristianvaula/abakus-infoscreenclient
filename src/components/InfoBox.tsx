@@ -10,13 +10,14 @@ export default function InfoBox() {
         </div>
       </div>
       <div className="some-container">
-        <div className="slack-box">
-          <img src="slack.png" alt="" className="slack-photo"/>
-        </div>
         <div className="insta-box">
           <img src="insta_title.png" alt="" className="insta-title-photo"/>
           <img src="insta.png" alt="" className="insta-photo"/>
         </div>
+        <div className="slack-box">
+          <img src="slack.png" alt="" className="slack-photo"/>
+        </div>
+
       </div>
     </div>
 
