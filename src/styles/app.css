@@ -12,17 +12,27 @@
 .topbar {
   height: var(--topbar-height);
   display: flex;
-  align-items: center;
-  padding: 0 16px;
+  gap: var(--gap);
+  width: 100%;
   box-sizing: border-box;
-  z-index: 100;
-  flex: 0 0 var(--topbar-height);
 }
 
 .topbar-left {
   display: flex;
+  width: var(--left-width);
+  min-width: 220px;
+  padding-left: 12px;
+  box-sizing: border-box;
+  display: flex;
+}
+.topbar-right {
+  width: var(--right-width);
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .topbar-logo {
@@ -58,134 +68,145 @@
 /* Right column (2/3 width) */
 .col-right {
   width: var(--right-width);
-  padding: 12px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-.video-area {
-  height: 40vh;                /* 40% of viewport height (reliable) */
-  max-height: 40vh;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--border-radius-md);
-  box-sizing: border-box;
-  background: var(--lego-card-color);
-}
-
-/* Outer container that houses the video + caption */
-.video-player-outer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;      /* stack video above title */
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 6px;               /* breathing room inside the outer box */
-  box-sizing: border-box;
-}
-
-/* The <video> scales to fit the available space while preserving aspect ratio.
-   It will not fill the entire box (because of padding and max-* rules) */
-.video-player {
-  flex: 1 1 auto;              /* take remaining space */
-  width: auto;                 /* let aspect ratio determine width */
-  max-width: 100%;
-  height: auto;
-  max-height: 100%;            /* can't grow beyond its container */
-  object-fit: contain;         /* show whole frame, letterboxed if needed */
-  display: block;
-  border: 0;
-  border-radius: 30px;
-  padding: 3px;                /* small internal padding so video doesn't touch edges */
-  box-sizing: border-box;
-  transform: scale(0.96);      /* slightly scaled down for "breathing room" */
-  transition: transform .18s ease;
-}
-
-/* optional: pop the video slightly on hover (if it's interactive) */
-.video-player:hover {
-  transform: scale(1);
-}
-
-/* title area — fixed-height so the video can use the rest */
-.video-caption {
-  flex: 0 0 auto;              /* keep caption from stretching */
-  width: 100%;
-  padding: 4px 6px 0;
-  box-sizing: border-box;
-  text-align: left;
-}
-
-.video-title {
-  font-size: var(--font-size-lg);
-  margin: 0;
-  word-break: normal;
-  color: var(--text-color);
-}
-
-.info-box {
-  display: block;
-  padding: 10px;
-  width: 100%;
-  border: 0;
-  border-radius: var(--border-radius-md);
-  background-color: #222222;
 }
 
 .titlebox {
   height: 8vh;
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content:center;
+  align-items: end;
 }
 .titlebox > h1 {
   font-size:x-large;
   margin: 0;
 }
 
-.info-box > h1 {
-  font-size:x-large;
-  margin-bottom: 12px;
+.info-container {
+  display: flex;
+  flex-direction: row;
+  height: 40vh;
 }
-.info-box > p {
-  font-size: large;
+
+.some-container {
+  position: relative;
+  margin-left: 12px; 
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+.slack-box {
+  min-height: 15vh;
+  border-radius: var(--border-radius-lg);
+  background-color: #5E2A5F;
+  border: 5px solid white;
+  overflow: hidden; /* ensures image respects rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slack-photo {
+  width: 100%;
+  height: auto;
+  padding: 30px; /* slight padding on the sides */
+  object-fit: contain; /* keeps full image visible */
+  display: block;
+}
+
+.insta-box {
+  margin-bottom: 12px;
+  min-height: 15vh;
+  border-radius: var(--border-radius-lg);
+  background-color: #252728;
+  overflow: hidden; /* ensures image respects rounded corners */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.insta-title-photo {
+  height: 12%;
+  margin-bottom: 5%;
+  width: auto;
+  object-fit: contain; /* keeps full image visible */
+  display: block;
+}
+
+.insta-photo {
+  width: auto;
+  height: 70%;
+  object-fit: contain; /* keeps full image visible */
+  display: block;
+  align-self: flex-start;
+  margin-left: 30px
+}
+
+.image-box {
+  width: 100%;
+  position: relative;
+  background-image: url('/image.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;      /* tekst nederst */
+  padding: 24px;              /* luft rundt tekst */
+  border: 0;
+  border-radius: var(--border-radius-lg);
+}
+
+.image-content {
+  color: white;
+  background-color: rgba(0,0,0,0.1);
+  text-shadow: 0 3px 6px rgba(0,0,0,0.9);
+  max-width: 90%; /* optional, for bedre linjelengde */
+}
+
+.image-content h1 {
+  margin: 0 0 12px 0;
+}
+
+.image-content p {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.4;
 }
 
 
 @media (min-width: 1000px) {
-  .info-box > h1, .titlebox > h1{ font-size: 1.0rem;}
-  .info-box > p {font-size: 1.0rem;}
+  .image-content > h1, .titlebox > h1{ font-size: 1.8rem;}
+  .image-content > p {font-size: 1.5rem;}
   .topbar-logo { height: 64px; }
 }
 
 @media (min-width: 1800px) {
-  .info-box > h1, .titlebox > h1{ font-size: 1.40rem;}
-  .info-box > p {font-size: 1.1rem;}
+  .image-content > h1, .titlebox > h1{ font-size: 2rem;}
+  .image-content > p {font-size: 1.8rem;}
   .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 2500px) {
-  .info-box > h1, .titlebox > h1{ font-size: 1.8rem;}
-  .info-box > p {font-size: 1.5rem;}
-  .topbar-logo { height: 128px; }
+  .image-content > h1, .titlebox > h1{ font-size: 2.4rem;}
+  .image-content > p {font-size: 2rem;}
+  .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 3200px) {
-  .info-box > h1, .titlebox > h1{ font-size: 2.5rem; margin-bottom: 20px; margin-top:10px;}
-  .info-box > p {font-size: 2.0rem;}
-  .topbar-logo { height: 200px; }
-  .info-box { padding: 20px;}
+  .image-content { text-shadow: 0 10px 10px rgba(0,0,0,0.9);}
+  .topbar-logo { height: 100%; width: auto; }
+  .image-box { padding: 20px;}
   .col-left { padding: 30px; gap: 30px; }
+  .topbar-left {padding-left: 30px; }
+  .titlebox > h1{ font-size: 3rem; margin-bottom: 20px; margin-top:10px;}
+  .some-container { margin-left: 30px; }
+  .insta-box { margin-bottom: 30px;}
 }
 
 @media (orientation: portrait), (max-width: 800px) {
