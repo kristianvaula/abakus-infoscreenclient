@@ -75,16 +75,6 @@
   overflow: hidden;
 }
 
-
-.info-box {
-  display: block;
-  padding: 10px;
-  width: 100%;
-  border: 0;
-  border-radius: var(--border-radius-md);
-  background-color: #222222;
-}
-
 .titlebox {
   height: 8vh;
   width: 100%;
@@ -97,10 +87,70 @@
   margin: 0;
 }
 
-.info-box {
+.info-container {
+  display: flex;
+  flex-direction: row;
+  height: 40vh;
+}
+
+.some-container {
   position: relative;
-  width: 50%;
-  min-height: 40vh; /* juster etter behov */
+  margin-left: 12px; 
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+.slack-box {
+  margin-bottom: 12px;
+  min-height: 15vh;
+  border-radius: var(--border-radius-lg);
+  background-color: #5E2A5F;
+  border: 5px solid white;
+  overflow: hidden; /* ensures image respects rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slack-photo {
+  width: 100%;
+  height: auto;
+  padding: 30px; /* slight padding on the sides */
+  object-fit: contain; /* keeps full image visible */
+  display: block;
+}
+
+.insta-box {
+  margin-bottom: 12px;
+  min-height: 14vh;
+  border-radius: var(--border-radius-lg);
+  background-color: #252728;
+  overflow: hidden; /* ensures image respects rounded corners */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.insta-title-photo {
+  height: 12%;
+  margin-bottom: 5%;
+  width: auto;
+  object-fit: contain; /* keeps full image visible */
+  display: block;
+}
+
+.insta-photo {
+  width: auto;
+  height: 70%;
+  object-fit: contain; /* keeps full image visible */
+  display: block;
+  align-self: flex-start;
+  margin-left: 30px
+}
+
+.image-box {
+  width: 100%;
+  position: relative;
   background-image: url('/image.png');
   background-size: cover;
   background-position: center;
@@ -109,20 +159,22 @@
   display: flex;
   align-items: flex-end;      /* tekst nederst */
   padding: 24px;              /* luft rundt tekst */
+  border: 0;
+  border-radius: var(--border-radius-lg);
 }
 
-.info-content {
+.image-content {
   color: white;
   background-color: rgba(0,0,0,0.1);
   text-shadow: 0 3px 6px rgba(0,0,0,0.9);
   max-width: 90%; /* optional, for bedre linjelengde */
 }
 
-.info-content h1 {
+.image-content h1 {
   margin: 0 0 12px 0;
 }
 
-.info-content p {
+.image-content p {
   margin: 0;
   font-size: 2rem;
   line-height: 1.4;
@@ -130,31 +182,32 @@
 
 
 @media (min-width: 1000px) {
-  .info-content > h1, .titlebox > h1{ font-size: 1.8rem;}
-  .info-content > p {font-size: 1.5rem;}
+  .image-content > h1, .titlebox > h1{ font-size: 1.8rem;}
+  .image-content > p {font-size: 1.5rem;}
   .topbar-logo { height: 64px; }
 }
 
 @media (min-width: 1800px) {
-  .info-content > h1, .titlebox > h1{ font-size: 2rem;}
-  .info-content > p {font-size: 1.8rem;}
+  .image-content > h1, .titlebox > h1{ font-size: 2rem;}
+  .image-content > p {font-size: 1.8rem;}
   .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 2500px) {
-  .info-content > h1, .titlebox > h1{ font-size: 2.4rem;}
-  .info-content > p {font-size: 2rem;}
+  .image-content > h1, .titlebox > h1{ font-size: 2.4rem;}
+  .image-content > p {font-size: 2rem;}
   .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 3200px) {
-  .info-content { text-shadow: 0 10px 10px rgba(0,0,0,0.9);}
+  .image-content { text-shadow: 0 10px 10px rgba(0,0,0,0.9);}
   .topbar-logo { height: 100%; width: auto; }
-  .info-box { padding: 20px;}
+  .image-box { padding: 20px;}
   .col-left { padding: 30px; gap: 30px; }
   .topbar-left {padding-left: 30px; }
   .titlebox > h1{ font-size: 3rem; margin-bottom: 20px; margin-top:10px;}
-  
+  .some-container { margin-left: 30px; }
+  .slack-box { margin-bottom: 30px;}
 }
 
 @media (orientation: portrait), (max-width: 800px) {
