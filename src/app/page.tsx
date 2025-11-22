@@ -1,6 +1,7 @@
 import VideoArea from "@/components/videoplayer/VideoArea";
 import BusFooter from "@/components/bus-footer/BusFooter";
 import "../styles/app.css"
+import "@/styles/components/videoplayer.css";
 import Events from "@/components/events/Events";
 import InfoBox from "@/components/InfoBox";
 
