@@ -1,3 +1,5 @@
+/* events.css - combined: closed card + open card that matches your original prompt */
+/* wrapper and columns */
 .event-wrapper {
   margin-top: 2%;
   height: 100%;
@@ -14,7 +16,9 @@
   margin-right: 12px;
 }
 
-/* events.css - basic styling for the event card */
+/* --------------------------
+   BASE (closed) CARD
+   -------------------------- */
 .event-card {
   display: flex;
   align-items: stretch;
@@ -26,9 +30,14 @@
   min-height: 12%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+  /* collapsed card sizing and transition */
+  transition: max-height 420ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms, transform 240ms;
+  max-height: 140px;
+  position: relative;
 }
 
-/* left image column */
+/* left image column for closed card */
 .event-image {
   flex: 0 0 48%;
   height: 100%;
@@ -36,6 +45,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: flex-basis 420ms cubic-bezier(.2,.9,.2,1), height 420ms, opacity 300ms;
+  overflow: hidden;
 }
 
 .event-img {
@@ -43,6 +54,8 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transform-origin: center;
+  transition: transform 420ms ease;
 }
 
 /* placeholder if no image */
@@ -56,7 +69,7 @@
   font-size: 0.9rem;
 }
 
-/* right content */
+/* right content (closed) */
 .event-body {
   display: flex;
   box-sizing: border-box;
@@ -65,18 +78,21 @@
   height: 100%;
   justify-content: space-between;
   padding-top: 10px;
+  transition: padding 300ms;
 }
 
-/* top section: title and metadata */
+/* event-top for closed card (keeps title centered) */
 .event-top {
   padding-left: 12px;
   max-width: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
 
+/* title (closed) */
 .event-title {
   max-width: 100%;
   margin: 0;
@@ -89,8 +105,10 @@
   padding-top: 10px;
   padding-bottom: 5px;
   text-align: center;
+  max-width: 90%;
 }
 
+/* meta (closed) */
 .event-meta {
   width: 100%;
   display: flex;
@@ -102,38 +120,225 @@
   padding-bottom: 10px;
 }
 
-
-
 .event-sep {
   color: #6b7280;
 }
 
-/* bottom section: capacity and progress */
+/* bottom indicator */
 .event-bottom {
   min-height: 2px;
   height: 2px;
   max-height: 2px;
   width: 100%;
+  transition: height 360ms, max-height 360ms;
 }
 
+/* --------------------------
+   OPEN CARD (visually match original)
+   -------------------------- */
+/* When card gets .event-open it becomes column layout with big image top */
+.event-card.event-open {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  background: #222222;
+  color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  /* visually like your original min-height: 27% — use a pixel fallback for consistency */
+  min-height: 27%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+  transition: max-height 480ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms, transform 240ms;
+  max-height: 720px; /* large enough to show expanded content; tweak if needed */
+}
+
+/* image becomes hero on top in open state */
+.event-card.event-open .event-image {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 60%; /* original behavior had image occupying top portion — tweak this percentage if you prefer */
+  transition: height 480ms cubic-bezier(.2,.9,.2,1), opacity 360ms;
+}
+
+/* subtle image zoom when open */
+.event-card.event-open .event-img {
+  transform: scale(1.03);
+}
+
+/* body for open card */
+.event-card.event-open .event-body {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  height: 55%;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  transition: padding 360ms, height 360ms;
+}
+
+/* In the open card your prompt used .event-body-open; we replicate that look */
+.event-card.event-open .event-body .event-top {
+  align-items: center;
+  justify-content: center;
+  padding-left: 0;
+  width: 100%;
+}
+
+/* title open styling mirrors your original */
+.event-card.event-open .event-title {
+  margin: 0;
+  font-weight: 600;
+  color: #fff;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 1.0rem; /* baseline; responsive rules below will scale larger screens */
+  line-height: 1.1;
+}
+
+/* meta open (centered) */
+.event-card.event-open .event-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #cbd5e1;
+  opacity: 0.9;
+  min-width: 30%;
+  max-width: 45%;
+  padding-bottom: 0;
+}
+.event-body-inner {
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  gap: 8px; 
+  height: 100%;
+  width: 100%;
+}
+.event-open .event-body-inner {
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.event-open .event-top {
+  width: 50%;
+  max-width: 90%;
+}
+
+/* make inner content fade/slide slightly for nicer open animation */
+.event-body .event-top,
+.event-body .event-meta {
+  transition: opacity 300ms ease, transform 300ms ease;
+  opacity: 0.98;
+  transform: translateY(0);
+}
+
+/* bottom indicator remains at bottom of card in open state; make it slightly thicker */
+.event-card.event-open .event-bottom {
+  min-height: 4px;
+  height: 4px;
+  max-height: 8px;
+  transition: height 300ms;
+}
+
+/* ---------- smoother title transitions ---------- */
+
+/* hint the browser this element will animate (helps performance) */
+.event-title {
+  will-change: transform, opacity;
+  transition: transform 360ms cubic-bezier(.2,.9,.2,1),
+              opacity 300ms ease,
+              color 200ms ease,
+              /* fallback if you still want to animate font-size in browsers that support it */
+              font-size 360ms cubic-bezier(.2,.9,.2,1),
+              line-height 360ms cubic-bezier(.2,.9,.2,1);
+  /* closed behavior: single line, slightly scaled down so open -> closed feels like contracting */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: center;
+  transform: translateY(0) scale(1);
+  opacity: 0.98;
+}
+
+/* open state: allow wrapping, lift + scale slightly and increase opacity */
+.event-card.event-open .event-title {
+  /* choose either scale OR font-size change — scale is smoother on most devices */
+  transform: translateY(-6px) scale(1.02);
+  opacity: 1;
+  color: #ffffff;
+  /* let the title wrap when open; shows more text rather than ellipsising */
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;         /* show up to 2 lines in expanded view */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* optionally, if you prefer animating font-size instead of scale, uncomment and tweak:
+.event-card.event-open .event-title { font-size: 1.05rem; line-height:1.15; }
+*/
+
+/* when closed, slightly smaller and nudged down so the transition feels like a lift */
+.event-card:not(.event-open) .event-title {
+  transform: translateY(0) scale(0.995);
+  opacity: 0.95;
+}
+
+/* also animate the container so title movement feels anchored */
+.event-card .event-top {
+  transition: padding 360ms cubic-bezier(.2,.9,.2,1), transform 360ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* optionally reduce abrupt clipping during resize by telling the image to repaint separately */
+.event-card .event-image,
+.event-card .event-img {
+  will-change: transform, width, height;
+}
+
+
+/* --------------------------
+   RESPONSIVE FONT & SIZING (kept from original)
+   -------------------------- */
 @media (min-width: 1000px) {
   .event-title{ font-size: 1.0rem;}
   .event-meta {font-size: 1.0rem;}
+  .event-card.event-open .event-title{ font-size: 1.0rem;}
+  .event-card.event-open .event-meta{ font-size: 1.0rem;}
 }
 
 @media (min-width: 1800px) {
   .event-title{ font-size: 1.40rem;}
   .event-meta {font-size: 1.1rem;}
+  .event-card.event-open .event-title{ font-size: 1.40rem;}
+  .event-card.event-open .event-meta{ font-size: 1.1rem;}
 }
 
 @media (min-width: 2500px) {
-  .event-title{ font-size: 1.8rem; padding-top: 20px;}
-  .event-meta {font-size: 1.5rem;}
+  .event-title { font-size: 1.8rem; padding-top: 20px;}
+  .event-card.event-open .event-title{ font-size: 2.4rem; padding-top: 0px; }
+  .event-body-inner {gap: 30px;}
+  .event-meta, .event-card.event-open .event-meta {font-size: 1.8rem;}
 }
 
 @media (min-width: 3200px) {
-  .event-title{ font-size: 2.6rem; padding-top: 30px;}
-  .event-meta {font-size: 2.2rem;}
+  .event-title { font-size: 2.6rem; padding-top: 30px;}
+  .event-card.event-open .event-title{ font-size: 3.0rem; padding-top: 0px; }
+  .event-meta, .event-card.event-open .event-meta {font-size: 2.4rem;}
   .event-columns {
     gap: 30px; 
     margin-right: 30px;
@@ -144,9 +349,10 @@
   }
 }
 
-
 /* small responsive tweak */
 @media (max-width: 480px) {
-  .event-image { flex: 0 0 120px; }
+  .event-image { flex: 0 0 120px; height: auto; }
   .event-title { font-size: 1rem; }
+  .event-card.event-open .event-image { height: 180px; } /* keep open hero image reasonable on small screens */
 }
+
