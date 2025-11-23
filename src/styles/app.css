@@ -175,7 +175,7 @@
 
 .image-content p {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1rem;
   line-height: 1.4;
 }
 
@@ -187,13 +187,13 @@
 }
 
 @media (min-width: 1800px) {
-  .image-content > h1, .titlebox > h1{ font-size: 2rem;}
-  .image-content > p {font-size: 1.8rem;}
+  .image-content > h1, .titlebox > h1{ font-size: 1.2rem;}
+  .image-content > p {font-size: 1.2rem;}
   .topbar-logo { height: 100px; }
 }
 
 @media (min-width: 2500px) {
-  .image-content > h1, .titlebox > h1{ font-size: 2.4rem;}
+  .image-content > h1, .titlebox > h1{ font-size: 2.0rem;}
   .image-content > p {font-size: 2rem;}
   .topbar-logo { height: 100px; }
 }

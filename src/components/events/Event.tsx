@@ -29,12 +29,12 @@ export default function Event({ event }: Props) {
         <div className="event-top">
           <h3 className="event-title" title={event.title}>{event.title}</h3>
         </div>
+        <div className="event-meta">
+          <span className="event-time">{event.time}</span>
+          <span className="event-sep">•</span>
+          <span className="event-type">{getEventTypeLabel(event.eventType || "")}</span>
+        </div>
         <div>
-          <div className="event-meta">
-            <span className="event-time">{event.time}</span>
-            <span className="event-sep">•</span>
-            <span className="event-type">{getEventTypeLabel(event.eventType || "")}</span>
-          </div>
           <div 
             className="event-bottom" 
             style={{ backgroundColor: getEventColorHex(event.eventType || "") }}
