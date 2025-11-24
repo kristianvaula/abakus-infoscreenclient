@@ -364,3 +364,15 @@
   .event-title { font-size: 1rem; }
   .event-card.event-open .event-image { height: 180px; } /* keep open hero image reasonable on small screens */
 }
+
+.no-motion .event-card,
+.no-motion .event-card.event-open,
+.no-motion .event-image,
+.no-motion .event-img,
+.no-motion .event-body,
+.no-motion .event-title,
+.no-motion .event-meta,
+.no-motion .event-bottom {
+  transition: none !important;
+  will-change: auto !important;
+}

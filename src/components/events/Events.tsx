@@ -12,8 +12,8 @@ const COURSE_TYPES = new Set<string>(
 );
 
 // How long each event stays open (ms)
-const DEFAULT_PAGE_DURATION = 12000;
-const FIRST_NUM_EVENTS = 6;
+const DEFAULT_PAGE_DURATION = 10000;
+const FIRST_NUM_EVENTS = 6
 
 export default function Events() {
   const [sEvents, setSEvents] = useState<EventItem[]>([]); // Social / other events
@@ -21,17 +21,17 @@ export default function Events() {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // use a ref for the timeout id so we can clear reliably
+  // timeout id for paging
   const timerRef = useRef<number | null>(null);
+  // mounted flag
   const mountedRef = useRef(true);
-
-  // Memoize Event to avoid re-render when its props do not change.
-  // This relies on Event being a pure component (no local changing state that affects render).
-  const MemoEvent = React.useMemo(() => React.memo(Event), []);
+  // true if we allow cycling (false => disabled to save resources)
+  const [cyclingAllowed, setCyclingAllowed] = useState(true);
 
   // load events from API (keeps original behaviour of hourly refresh)
   useEffect(() => {
     mountedRef.current = true;
+
     async function load() {
       try {
         const res = await fetch("/api/events");
@@ -71,7 +71,7 @@ export default function Events() {
     };
   }, []);
 
-  // reset active index if list lengths change (avoid out-of-bounds)
+  // keep active index in bounds when lists change
   useEffect(() => {
     setActiveIndex((i) => (sEvents.length ? Math.min(i, sEvents.length - 1) : 0));
   }, [sEvents.length]);
@@ -80,7 +80,46 @@ export default function Events() {
     setActiveIndex((i) => (oEvents.length ? Math.min(i, oEvents.length - 1) : 0));
   }, [oEvents.length]);
 
-  // paging loop using a single setTimeout chain (less jitter than repeated setInterval)
+  // QUICK rAF probe to detect slow devices (very small cost)
+  // If device is slow (avg frame > 40ms) => disable cycling to save CPU.
+  useEffect(() => {
+    let rafId = 0;
+    let frames = 0;
+    let last = performance.now();
+    let sum = 0;
+    const MAX_FRAMES = 6;
+
+    function step() {
+      const now = performance.now();
+      sum += now - last;
+      last = now;
+      frames += 1;
+      if (frames < MAX_FRAMES) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        const avg = sum / frames; // ms per frame
+        const SLOW_THRESHOLD = 30; // > ~25 FPS is considered slow; tweak if needed
+
+        if (avg > SLOW_THRESHOLD) {
+          // disable cycling and add a class to disable transitions
+          setCyclingAllowed(false);
+          try { document.documentElement.classList.add("no-motion"); } catch {}
+          console.warn(`Device appears slow (avg frame ${Math.round(avg)}ms) — disabling event cycling.`);
+        } else {
+          setCyclingAllowed(true);
+          try { document.documentElement.classList.remove("no-motion"); } catch {}
+        }
+      }
+    }
+
+    rafId = requestAnimationFrame(step);
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []); // run only once on mount
+
+  // paging loop using single setTimeout chain — lightweight, pauses when page hidden
   useEffect(() => {
     // clear previous timeout
     if (timerRef.current) {
@@ -88,44 +127,56 @@ export default function Events() {
       timerRef.current = null;
     }
 
-    // nothing to animate if <= 1 item
-    if (!sEvents || sEvents.length <= 1) {
+    // don't start if cycling disabled or not enough events
+    if (!cyclingAllowed || !sEvents || sEvents.length <= 1) {
       setActiveIndex(0);
       return;
     }
 
-    // small optimization: only page through up to FIRST_NUM_EVENTS items (keeps behaviour consistent
-    // with your original modulus usage), but still preserves list content for rendering.
+    // respect FIRST_NUM_EVENTS behaviour but don't exceed list length
     const pageCount = Math.max(1, Math.min(FIRST_NUM_EVENTS, sEvents.length));
 
+    // visibility handling — pause when not visible
+    function handleVisibility() {
+      if (document.hidden) {
+        if (timerRef.current) {
+          window.clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      } else {
+        // resume scheduling from current index
+        timerRef.current = window.setTimeout(tick, DEFAULT_PAGE_DURATION);
+      }
+    }
+
+    // tick function schedules itself
     const tick = () => {
-      // use functional state update to avoid stale closures
-      setActiveIndex((prev) => {
-        const next = (prev + 1) % pageCount;
-        return next;
-      });
-      // schedule next tick if still mounted and there's more than one item
-      if (mountedRef.current && pageCount > 1) {
+      if (!mountedRef.current) return;
+      setActiveIndex((prev) => (prev + 1) % pageCount);
+      // schedule next only if still allowed and page visible
+      if (mountedRef.current && cyclingAllowed && pageCount > 1 && !document.hidden) {
         timerRef.current = window.setTimeout(tick, DEFAULT_PAGE_DURATION);
       }
     };
 
-    // schedule the first tick after the configured duration
+    // start the chain
     timerRef.current = window.setTimeout(tick, DEFAULT_PAGE_DURATION);
+    document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
       if (timerRef.current) {
         window.clearTimeout(timerRef.current);
         timerRef.current = null;
       }
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
-  }, [sEvents, DEFAULT_PAGE_DURATION]);
+  }, [sEvents, cyclingAllowed]); // rerun if events or cyclingAllowed changes
 
   return (
     <div className="event-wrapper">
       <div className="event-columns">
         {sEvents.map((ev, idx) => (
-          <MemoEvent
+          <Event
             event={ev}
             key={(ev as any).id ?? JSON.stringify(ev)}
             open={idx === activeIndex}
@@ -135,7 +186,7 @@ export default function Events() {
 
       <div className="event-columns">
         {oEvents.map((ev, idx) => (
-          <MemoEvent
+          <Event
             event={ev}
             key={(ev as any).id ?? JSON.stringify(ev)}
             open={idx === activeIndex}
