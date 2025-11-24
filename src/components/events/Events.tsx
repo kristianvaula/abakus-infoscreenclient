@@ -12,8 +12,8 @@ const COURSE_TYPES = new Set<string>(
 );
 
 // How long each event stays open (ms)
-const DEFAULT_PAGE_DURATION = 10000;
-const FIRST_NUM_EVENTS = 6
+const DEFAULT_PAGE_DURATION = 12000;
+const FIRST_NUM_EVENTS = 6;
 
 export default function Events() {
   const [sEvents, setSEvents] = useState<EventItem[]>([]); // Social / other events
@@ -21,12 +21,17 @@ export default function Events() {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // use a ref for the timeout id so we can clear reliably
   const timerRef = useRef<number | null>(null);
+  const mountedRef = useRef(true);
+
+  // Memoize Event to avoid re-render when its props do not change.
+  // This relies on Event being a pure component (no local changing state that affects render).
+  const MemoEvent = React.useMemo(() => React.memo(Event), []);
 
   // load events from API (keeps original behaviour of hourly refresh)
   useEffect(() => {
-    let mounted = true;
-
+    mountedRef.current = true;
     async function load() {
       try {
         const res = await fetch("/api/events");
@@ -49,7 +54,7 @@ export default function Events() {
           }
         });
 
-        if (mounted) {
+        if (mountedRef.current) {
           setSEvents(social);
           setOEvents(other);
         }
@@ -59,14 +64,14 @@ export default function Events() {
     }
 
     load();
-    const id = setInterval(load, 60 * 60 * 1000); // refresh every hour
+    const id = window.setInterval(load, 60 * 60 * 1000); // refresh every hour
     return () => {
-      mounted = false;
+      mountedRef.current = false;
       clearInterval(id);
     };
   }, []);
 
-  // reset active index if list changes (avoid out-of-bounds)
+  // reset active index if list lengths change (avoid out-of-bounds)
   useEffect(() => {
     setActiveIndex((i) => (sEvents.length ? Math.min(i, sEvents.length - 1) : 0));
   }, [sEvents.length]);
@@ -75,36 +80,52 @@ export default function Events() {
     setActiveIndex((i) => (oEvents.length ? Math.min(i, oEvents.length - 1) : 0));
   }, [oEvents.length]);
 
-  // social column paging
+  // paging loop using a single setTimeout chain (less jitter than repeated setInterval)
   useEffect(() => {
-    // clear any existing timer
+    // clear previous timeout
     if (timerRef.current) {
-      window.clearInterval(timerRef.current);
+      window.clearTimeout(timerRef.current);
       timerRef.current = null;
     }
 
-    if (sEvents.length <= 1) return; // nothing to page or paused
+    // nothing to animate if <= 1 item
+    if (!sEvents || sEvents.length <= 1) {
+      setActiveIndex(0);
+      return;
+    }
 
-    timerRef.current = window.setInterval(() => {
+    // small optimization: only page through up to FIRST_NUM_EVENTS items (keeps behaviour consistent
+    // with your original modulus usage), but still preserves list content for rendering.
+    const pageCount = Math.max(1, Math.min(FIRST_NUM_EVENTS, sEvents.length));
+
+    const tick = () => {
+      // use functional state update to avoid stale closures
       setActiveIndex((prev) => {
-        const next = (prev + 1) % Math.max(1, FIRST_NUM_EVENTS);
+        const next = (prev + 1) % pageCount;
         return next;
       });
-    }, DEFAULT_PAGE_DURATION);
+      // schedule next tick if still mounted and there's more than one item
+      if (mountedRef.current && pageCount > 1) {
+        timerRef.current = window.setTimeout(tick, DEFAULT_PAGE_DURATION);
+      }
+    };
+
+    // schedule the first tick after the configured duration
+    timerRef.current = window.setTimeout(tick, DEFAULT_PAGE_DURATION);
 
     return () => {
       if (timerRef.current) {
-        window.clearInterval(timerRef.current);
+        window.clearTimeout(timerRef.current);
         timerRef.current = null;
       }
     };
-  }, [sEvents.length]);
+  }, [sEvents, DEFAULT_PAGE_DURATION]);
 
   return (
     <div className="event-wrapper">
       <div className="event-columns">
         {sEvents.map((ev, idx) => (
-          <Event
+          <MemoEvent
             event={ev}
             key={(ev as any).id ?? JSON.stringify(ev)}
             open={idx === activeIndex}
@@ -114,7 +135,7 @@ export default function Events() {
 
       <div className="event-columns">
         {oEvents.map((ev, idx) => (
-          <Event
+          <MemoEvent
             event={ev}
             key={(ev as any).id ?? JSON.stringify(ev)}
             open={idx === activeIndex}
