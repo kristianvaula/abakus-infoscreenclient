@@ -1,21 +1,29 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Event from "./Event";
 import { EventItem } from "@/types/types";
 import { EventType } from "@/types/eventTypes";
 import "@/styles/components/events.css";
 
-// store lowercase values so comparisons with .toLowerCase() work
 const COURSE_TYPES = new Set<string>(
   [EventType.Course, EventType.CompanyPresentation, EventType.BreakfastTalk].map((s) =>
     (s ?? "").toString().toLowerCase()
   )
 );
 
+// How long each event stays open (ms)
+const DEFAULT_PAGE_DURATION = 10000;
+const FIRST_NUM_EVENTS = 6
+
 export default function Events() {
   const [sEvents, setSEvents] = useState<EventItem[]>([]); // Social / other events
   const [oEvents, setOEvents] = useState<EventItem[]>([]); // Course-like events
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const timerRef = useRef<number | null>(null);
+
+  // load events from API (keeps original behaviour of hourly refresh)
   useEffect(() => {
     let mounted = true;
 
@@ -26,11 +34,9 @@ export default function Events() {
         const json = await res.json();
 
         if (!Array.isArray(json)) {
-          // if the API returns something unexpected, don't touch existing state
           throw new Error("Events response is not an array");
         }
 
-        // group into two arrays
         const social: EventItem[] = [];
         const other: EventItem[] = [];
 
@@ -60,17 +66,59 @@ export default function Events() {
     };
   }, []);
 
+  // reset active index if list changes (avoid out-of-bounds)
+  useEffect(() => {
+    setActiveIndex((i) => (sEvents.length ? Math.min(i, sEvents.length - 1) : 0));
+  }, [sEvents.length]);
+
+  useEffect(() => {
+    setActiveIndex((i) => (oEvents.length ? Math.min(i, oEvents.length - 1) : 0));
+  }, [oEvents.length]);
+
+  // social column paging
+  useEffect(() => {
+    // clear any existing timer
+    if (timerRef.current) {
+      window.clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    if (sEvents.length <= 1) return; // nothing to page or paused
+
+    timerRef.current = window.setInterval(() => {
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % Math.max(1, FIRST_NUM_EVENTS);
+        return next;
+      });
+    }, DEFAULT_PAGE_DURATION);
+
+    return () => {
+      if (timerRef.current) {
+        window.clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [sEvents.length]);
+
   return (
     <div className="event-wrapper">
       <div className="event-columns">
-        {sEvents.map((ev) => (
-          // prefer a stable key if available; fallback to index only if necessary
-          <Event event={ev} key={(ev as any).id ?? JSON.stringify(ev)} />
+        {sEvents.map((ev, idx) => (
+          <Event
+            event={ev}
+            key={(ev as any).id ?? JSON.stringify(ev)}
+            open={idx === activeIndex}
+          />
         ))}
       </div>
+
       <div className="event-columns">
-        {oEvents.map((ev) => (
-          <Event event={ev} key={(ev as any).id ?? JSON.stringify(ev)} />
+        {oEvents.map((ev, idx) => (
+          <Event
+            event={ev}
+            key={(ev as any).id ?? JSON.stringify(ev)}
+            open={idx === activeIndex}
+          />
         ))}
       </div>
     </div>
