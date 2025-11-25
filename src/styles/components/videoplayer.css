@@ -22,7 +22,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  /* padding: 6px; */              /* breathing room inside the outer box */
+  padding: 3px;             /* breathing room inside the outer box */
   box-sizing: border-box;
 }
 
