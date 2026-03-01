@@ -2,7 +2,6 @@
 "use client";
 import React from "react";
 import { EventItem } from "@/types/types";
-import "@/styles/components/events.css";
 import { getEventTypeLabel, getEventColorHex } from "@/types/eventTypes";
 
 interface Props {
@@ -26,7 +25,7 @@ export default function Event({ event, open = false }: Props) {
       <div className="event-body">
         <div className="event-body-inner">
           <div className="event-top">
-            <h3 className={`event-title ${open ? "event-title--open" : ""}`} title={event.title}>
+            <h3 className="event-title" title={event.title}>
               {open ? (event.title ?? "") : (event.title ?? "")}
             </h3>
           </div>

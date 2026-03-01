@@ -1,0 +1,142 @@
+/* InfoBox component */
+
+.info-box {
+  display: flex;
+  flex-direction: row;
+  height: 40vh;
+}
+
+.info-hero {
+  width: 100%;
+  position: relative;
+  background-image: url("/image.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+}
+
+.info-heroContent {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.9);
+  max-width: 90%;
+}
+
+.info-heroContent h1 {
+  margin: 0 0 12px 0;
+}
+
+.info-heroContent p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.info-side {
+  position: relative;
+  margin-left: 12px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-insta {
+  margin-bottom: 12px;
+  min-height: 15vh;
+  border-radius: var(--border-radius-lg);
+  background-color: #252728;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-instaTitle {
+  height: 12%;
+  margin-bottom: 5%;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.info-instaImage {
+  width: auto;
+  height: 70%;
+  object-fit: contain;
+  display: block;
+  align-self: flex-start;
+  margin-left: 30px;
+}
+
+.info-slack {
+  min-height: 15vh;
+  border-radius: var(--border-radius-lg);
+  background-color: #5e2a5f;
+  border: 5px solid white;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-slackImage {
+  width: 100%;
+  height: auto;
+  padding: 30px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (min-width: 1000px) {
+  .info-heroContent > h1 {
+    font-size: 1.8rem;
+  }
+
+  .info-heroContent > p {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1800px) {
+  .info-heroContent > h1 {
+    font-size: 1.2rem;
+  }
+
+  .info-heroContent > p {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 2500px) {
+  .info-heroContent > h1 {
+    font-size: 2rem;
+  }
+
+  .info-heroContent > p {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 3200px) {
+  .info-heroContent {
+    text-shadow: 0 10px 10px rgba(0, 0, 0, 0.9);
+  }
+
+  .info-hero {
+    padding: 20px;
+  }
+
+  .info-side {
+    margin-left: 30px;
+  }
+
+  .info-insta {
+    margin-bottom: 30px;
+  }
+}

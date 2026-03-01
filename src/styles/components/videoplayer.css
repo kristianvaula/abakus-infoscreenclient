@@ -57,5 +57,5 @@
   font-size: var(--font-size-lg);
   margin: 0;
   word-break: normal;
-  color: var(--text-color);
+  color: var(--lego-font-color);
 }

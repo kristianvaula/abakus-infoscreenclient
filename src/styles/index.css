@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Design tokens */
+@import "./variables.css";
+
+/* Base/global element styles */
+@import "./globals.css";
+
+/* App layout */
+@import "./layout.css";
+
+/* Component styles (global selectors) */
+@import "./components/videoplayer.css";
+@import "./components/events.css";
+@import "./components/bus_footer.css";
+@import "./components/infoBox.css";

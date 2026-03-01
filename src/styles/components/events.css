@@ -23,13 +23,12 @@
   display: flex;
   align-items: stretch;
   width: 100%;
-  background: #222222; /* dark background */
-  color: #fff;
-  border-radius: 16px;
+  background: var(--lego-card-color);
+  color: var(--lego-font-color);
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
   min-height: 12%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 
   /* PERFORMANCE CHANGE: do not animate max-height (causes layout thrash on Pi).
      keep only cheap animations (box-shadow, transform) */
@@ -67,10 +66,10 @@
 .event-noimage {
   width: 100%;
   height: 100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
   font-size: 0.9rem;
 }
 
@@ -100,12 +99,11 @@
 
 /* title (closed) */
 .event-title {
-  max-width: 100%;
   margin: 0;
   font-weight: 600;
   line-height: 1.1;
-  color: #fff;
-  overflow:hidden;
+  color: var(--lego-font-color);
+  overflow: hidden;
   text-overflow: ellipsis;
   box-sizing: border-box;
   padding-top: 10px;
@@ -117,6 +115,10 @@
   will-change: transform, opacity;
   transition: transform 260ms linear, opacity 220ms linear, color 160ms linear;
   white-space: nowrap;
+
+  transform-origin: center;
+  transform: translateY(0) scale(1);
+  opacity: 0.98;
 }
 
 /* meta (closed) */
@@ -153,14 +155,13 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
-  background: #222222;
-  color: #fff;
-  border-radius: 16px;
+  background: var(--lego-card-color);
+  color: var(--lego-font-color);
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
   /* visually like your original min-height: 27% — use a pixel fallback for consistency */
   min-height: 27%;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 
   /* PERFORMANCE CHANGE: don't animate max-height — change layout instantly, animate inner opacity */
   transition: box-shadow 180ms linear, transform 180ms linear;
@@ -210,8 +211,8 @@
 .event-card.event-open .event-title {
   margin: 0;
   font-weight: 600;
-  color: #fff;
-  overflow:hidden;
+  color: var(--lego-font-color);
+  overflow: hidden;
   text-overflow: ellipsis;
   box-sizing: border-box;
   text-align: center;
@@ -281,26 +282,6 @@
 
 /* ---------- smoother title transitions ----------
    (kept but cheap: only transform + opacity) */
-
-/* hint the browser this element will animate (helps performance) */
-.event-title {
-  /* already set above; keep will-change narrowed to transform + opacity */
-  will-change: transform, opacity;
-  transition: transform 260ms linear, opacity 220ms linear, color 160ms linear;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transform-origin: center;
-  transform: translateY(0) scale(1);
-  opacity: 0.98;
-}
-
-/* open state: lift + scale slightly and increase opacity */
-.event-card.event-open .event-title {
-  transform: translateY(-6px) scale(1.02);
-  opacity: 1;
-  color: #ffffff;
-}
 
 /* when closed, slightly smaller and nudged down so the transition feels like a lift */
 .event-card:not(.event-open) .event-title {

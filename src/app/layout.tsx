@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import "../styles/globals.css";
+import "../styles/index.css";
 
 export const metadata: Metadata = {
   title: "Abakus Infoscreen",

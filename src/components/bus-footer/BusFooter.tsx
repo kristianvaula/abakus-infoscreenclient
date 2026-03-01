@@ -3,7 +3,6 @@
 
 import React, { useMemo, useEffect, useState, useRef } from "react";
 import useBusTimes from "@/hooks/useBusTimes";
-import "@/styles/components/bus_footer.css";
 
 const LowEndDetector = () => {
   // simple runtime heuristics for low-power devices
