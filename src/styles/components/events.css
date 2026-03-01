@@ -121,6 +121,16 @@
   opacity: 0.98;
 }
 
+/* Long titles: small reduction so more characters fit before truncation.
+   Kept as a modifier class so truncation (ellipsis / line-clamp) remains the fallback. */
+.event-title.event-title--long {
+  font-size: 1.8em;
+}
+
+.event-card.event-open .event-title.event-title--long {
+  font-size: 2.2em;
+}
+
 /* meta (closed) */
 .event-meta {
   width: 100%;

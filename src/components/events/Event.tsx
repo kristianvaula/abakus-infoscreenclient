@@ -12,6 +12,9 @@ interface Props {
 export default function Event({ event, open = false }: Props) {
   const [registered, total] = (event.capacity?.split("/") ?? []).map(n => Number(n)) as [number, number];
 
+  const title = event.title ?? "";
+  const longTitle = title.length > (open ? 40 : 25);
+
   return (
     <div className={`event-card ${open ? "event-open" : ""}`} title={event.title}>
       <div className="event-image">
@@ -25,7 +28,10 @@ export default function Event({ event, open = false }: Props) {
       <div className="event-body">
         <div className="event-body-inner">
           <div className="event-top">
-            <h3 className="event-title" title={event.title}>
+            <h3
+              className={`event-title${longTitle ? " event-title--long" : ""}`}
+              title={event.title}
+            >
               {open ? (event.title ?? "") : (event.title ?? "")}
             </h3>
           </div>
