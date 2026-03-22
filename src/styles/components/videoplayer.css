@@ -31,17 +31,17 @@
    Coordinates are percentages of the overlay image box. */
 .video-frame {
   /* abatv.png dimensions: 8399x6402 */
-  --abatv-aspect: 8399 / 6402;
+  --abatv-aspect: 8336 / 6262;
 
   /* Define the *screen rectangle* using pixel coordinates in abatv.png.
      Measure these in an image editor (top-left origin). The CSS converts them
      to percentages so it scales perfectly with the frame.
 
      NOTE: Defaults are placeholders. Tune to match the transparent area. */
-  --abatv-screen-left-px: 300;
-  --abatv-screen-top-px: 800;
+  --abatv-screen-left-px: 100;
+  --abatv-screen-top-px: 920;
   --abatv-screen-right-px: 8199;
-  --abatv-screen-bottom-px: 5800;
+  --abatv-screen-bottom-px: 6120;
 
   /* Derived responsive values (do not edit) */
   --abatv-screen-left: calc(var(--abatv-screen-left-px) * 100% / 8399);
@@ -53,7 +53,7 @@
 
   position: relative;
   width: 100%;
-  margin-top: 25px;
+  margin-top: 0px;
   aspect-ratio: var(--abatv-aspect);
 }
 
