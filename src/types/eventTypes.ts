@@ -20,6 +20,7 @@ export const EVENT_TYPE_LABELS: Record<string, string> = {
   breakfast_talk: "Frokostforedrag",
   party: "Fest",
   alternative_presentation: "Alternativ bedpres",
+  nexus_event: "Nexus-arrangement",
 };
 
 export const EVENT_TYPE_HEX: Record<string, string> = {

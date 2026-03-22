@@ -8,6 +8,9 @@
   --lego-card-color: #222;
   --lego-card-transparent: rgba(34, 34, 34, 0.9);
 
+  --lego-font-color: #fff;
+  --accent-color: #ffd54f;
+
   --secondary-font-color: #aaa;
 
   --lego-red-color: var(--color-red-7);

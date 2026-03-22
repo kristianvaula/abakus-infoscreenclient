@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Event from "./Event";
 import { EventItem } from "@/types/types";
 import { EventType } from "@/types/eventTypes";
-import "@/styles/components/events.css";
 
 const COURSE_TYPES = new Set<string>(
   [EventType.Course, EventType.CompanyPresentation, EventType.BreakfastTalk].map((s) =>

@@ -1,14 +1,14 @@
 
 .video-area {      
   min-height: 35vh;          
-  max-height: 40vh;
+  max-height: 45vh;
   display: flex;
   gap: 8px;
   align-items: center;
   justify-content: center;
   border-radius: var(--border-radius-lg);
   box-sizing: border-box;
-  background: var(--lego-card-color);
+  background: var(--lego-background-color);
 }
 
 /* Outer container that houses the video + caption */
@@ -23,6 +23,67 @@
   justify-content: center;
   gap: 8px;
   padding: 3px;             /* breathing room inside the outer box */
+  box-sizing: border-box;
+}
+
+/* TV frame wrapper (abatv.png)
+   The overlay fills the container width; tweak the screen rectangle via vars if needed.
+   Coordinates are percentages of the overlay image box. */
+.video-frame {
+  /* abatv.png dimensions: 8399x6402 */
+  --abatv-aspect: 8336 / 6262;
+
+  /* Define the *screen rectangle* using pixel coordinates in abatv.png.
+     Measure these in an image editor (top-left origin). The CSS converts them
+     to percentages so it scales perfectly with the frame.
+
+     NOTE: Defaults are placeholders. Tune to match the transparent area. */
+  --abatv-screen-left-px: 100;
+  --abatv-screen-top-px: 920;
+  --abatv-screen-right-px: 8199;
+  --abatv-screen-bottom-px: 6120;
+
+  /* Derived responsive values (do not edit) */
+  --abatv-screen-left: calc(var(--abatv-screen-left-px) * 100% / 8399);
+  --abatv-screen-top: calc(var(--abatv-screen-top-px) * 100% / 6402);
+  --abatv-screen-width: calc((var(--abatv-screen-right-px) - var(--abatv-screen-left-px)) * 100% / 8399);
+  --abatv-screen-height: calc((var(--abatv-screen-bottom-px) - var(--abatv-screen-top-px)) * 100% / 6402);
+
+  --abatv-screen-padding: 0px;
+
+  position: relative;
+  width: 100%;
+  margin-top: 0px;
+  aspect-ratio: var(--abatv-aspect);
+}
+
+.video-frame__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.video-frame__screen {
+  position: absolute;
+  left: var(--abatv-screen-left);
+  top: var(--abatv-screen-top);
+  width: var(--abatv-screen-width);
+  height: var(--abatv-screen-height);
+  z-index: 1;
+
+  background: var(--lego-card-color);
+  padding: var(--abatv-screen-padding);
+  border-radius: 10px;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 
@@ -44,6 +105,22 @@
   transition: transform .18s ease;
 }
 
+/* When the video is inside the TV screen, make it fill the screen exactly
+   and let the screen container provide padding + background letterboxing. */
+.video-frame__screen .video-player {
+  flex: 0 0 auto;
+  width: auto;
+  height: 90%;
+  max-width: 100%;
+  max-height: 90%;
+  padding: 0;
+  border-radius: 0;
+  transform: none;
+  transition: none;
+  background: var(--lego-background-color);
+  object-fit: contain;
+}
+
 /* title area — fixed-height so the video can use the rest */
 .video-caption {
   flex: 0 0 auto;              /* keep caption from stretching */
@@ -57,5 +134,5 @@
   font-size: var(--font-size-lg);
   margin: 0;
   word-break: normal;
-  color: var(--text-color);
+  color: var(--lego-font-color);
 }
